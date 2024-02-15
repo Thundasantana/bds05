@@ -1,9 +1,26 @@
 package com.devsuperior.movieflix.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Movie {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_movie")  //Anotação que define o nome da tabela no banco de dados
+public class Movie  implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String title;
 	private String subTitle;
@@ -11,6 +28,12 @@ public class Movie {
 	private String imgUri;
 	private String synopsis;
 	
+	@OneToMany(mappedBy = "movie")
+	private List<Review> reviews = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name = "genre_id") //determina a chave estrangeira na tabela tb_notification. 
+	private Genre genre;
 	
 	public Movie() {
 	}
@@ -70,6 +93,18 @@ public class Movie {
 
 	public void setSynopsis(String synopsis) {
 		this.synopsis = synopsis;
+	}
+	
+	public List<Review> getReviews() {
+		return reviews;
+	}
+	
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
 	}
 
 	@Override
