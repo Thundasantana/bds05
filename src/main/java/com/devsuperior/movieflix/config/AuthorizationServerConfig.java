@@ -30,7 +30,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private String clientSecret;
 
 	@Value("${jwt.duration}")
-	private Integer jwDuration;
+	private Integer jwtDuration;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -57,12 +57,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient(clientId).secret(passwordEncoder.encode(clientSecret)) // esta é a senha da
-																								// aplicação, não do
-																								// usuário.
-				.scopes("read", "write").authorizedGrantTypes("password", "refresh_token")
-				.accessTokenValiditySeconds(jwtDuration) // 86400 segundos de token válido.
-				.refreshTokenValiditySeconds(jwtDuration); // 86400 segundos de token válido.
+		clients.inMemory()
+			.withClient(clientId)
+			.secret(passwordEncoder.encode(clientSecret)) // esta é a senha da																				// aplicação, não do																			// usuário.
+			.scopes("read", "write")
+			.authorizedGrantTypes("password", "refresh_token")
+			.accessTokenValiditySeconds(jwtDuration) // 86400 segundos de token válido.
+			.refreshTokenValiditySeconds(jwtDuration);  // 86400 segundos de token válido.
 	}
 
 	@Override
@@ -71,7 +72,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		TokenEnhancerChain chain = new TokenEnhancerChain();
 		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter, tokenEnhancer));
 
-		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore)
-				.accessTokenConverter(accessTokenConverter).tokenEnhancer(chain).userDetailsService(userDetailsService);
+			endpoints.authenticationManager(authenticationManager)
+			.tokenStore(tokenStore)
+			.accessTokenConverter(accessTokenConverter)
+			.tokenEnhancer(chain)
+			.userDetailsService(userDetailsService);
 	}
 }
