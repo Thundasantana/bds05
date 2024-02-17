@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
 import com.devsuperior.movieflix.dto.UserDTO;
 import com.devsuperior.movieflix.entities.User;
 import com.devsuperior.movieflix.repositories.UserRepository;
+import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
-
+	
 	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
